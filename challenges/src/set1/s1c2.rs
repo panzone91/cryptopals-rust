@@ -1,4 +1,4 @@
-use utils::{fixed_xor, from_hex, to_base64, to_hex};
+use utils::{fixed_xor, from_hex, to_hex};
 
 pub fn s1c2() {
 
