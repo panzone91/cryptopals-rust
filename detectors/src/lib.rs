@@ -38,12 +38,12 @@ fn score_plaintext(plaintext: &[u8], frequency_map: &HashMap<u8, f32>) -> f32{
     return plaintext.iter().map(|byte| frequency_map.get(byte).unwrap_or(&(0.0 as f32))).sum();
 }
 
-pub fn detect_possible_single_xor(ciphertext: &[u8]) -> Option<(Box<[u8]>, u8)> {
+pub fn detect_possible_single_xor(ciphertext: &[u8]) -> Option<(Box<[u8]>, u8, f32)> {
     let frequency_map = create_hashmap();
 
     return (0..=255).map(|key| {
         let full_key = vec![key as u8; ciphertext.len()];
         let plaintext = fixed_xor(&ciphertext, &full_key);
         return (plaintext.clone(), key, score_plaintext(&plaintext, &frequency_map));
-    }).max_by(|a, b| a.2.total_cmp(&b.2)).map(|(a,b,_c)| (a,b));
+    }).max_by(|a, b| a.2.total_cmp(&b.2));
 }
