@@ -1,5 +1,5 @@
 [package]
-name = "cryptopals-rust"
+name = "breakers"
 version = "0.0.1"
 edition = "2021"
 
@@ -8,6 +8,3 @@ path = "../utils"
 
 [dependencies.detectors]
 path = "../detectors"
-
-[dependencies.breakers]
-path = "../breakers"

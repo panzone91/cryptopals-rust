@@ -17,15 +17,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cryptopals-rust"
-version = "0.0.1"
-dependencies = [
- "breakers",
- "detectors",
- "utils",
-]
-
-[[package]]
 name = "detectors"
 version = "0.0.1"
 dependencies = [
