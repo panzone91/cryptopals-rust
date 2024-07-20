@@ -47,3 +47,14 @@ pub fn detect_possible_single_xor(ciphertext: &[u8]) -> Option<(Box<[u8]>, u8, f
         return (plaintext.clone(), key, score_plaintext(&plaintext, &frequency_map));
     }).max_by(|a, b| a.2.total_cmp(&b.2));
 }
+
+pub fn number_blocks_repeated(data: &Vec<u8>, block_size: usize)-> u32 {
+    let mut map = HashMap::new();
+
+    data.chunks(block_size).for_each(|chunk| {
+        let current_val = *map.entry(chunk).or_insert(0);
+        map.insert(chunk, current_val + 1);
+    });
+
+    return map.values().max().unwrap_or(&0).clone();
+}
