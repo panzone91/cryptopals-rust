@@ -36,3 +36,9 @@ pub fn repeating_xor(a: &[u8], b: &[u8]) -> Box<[u8]> {
 pub fn hamming_distance(a: &[u8], b: &[u8]) -> u64 {
     a.iter().zip(b).fold(0, |acc, (x, y)| acc + (x ^ y).count_ones() as u64)
 }
+
+pub fn pkcs7_padding(data: &[u8], size: u8) -> Vec<u8> {
+    let pad_size = size - (data.len() % size as usize) as u8;
+    let pad = vec![pad_size; pad_size.into()];
+    return [data, &pad].concat();
+}
