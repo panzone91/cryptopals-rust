@@ -11,3 +11,6 @@ path = "../detectors"
 
 [dependencies.breakers]
 path = "../breakers"
+
+[dependencies.aes]
+path = "../aes"
