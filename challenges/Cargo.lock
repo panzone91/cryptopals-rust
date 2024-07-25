@@ -7,6 +7,7 @@ name = "aes"
 version = "0.0.1"
 dependencies = [
  "openssl",
+ "utils",
 ]
 
 [[package]]

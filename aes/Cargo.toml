@@ -5,3 +5,6 @@ edition = "2021"
 
 [dependencies]
 openssl = "0.10.62"
+
+[dependencies.utils]
+path = "../utils"

@@ -1,5 +1,5 @@
 use std::fs::{File, read_to_string};
-use aes::{decrypt_aes128_ecb};
+use aes::{decrypt_aes_ecb};
 use detectors::number_blocks_repeated;
 use utils::{from_base64, to_base64};
 
