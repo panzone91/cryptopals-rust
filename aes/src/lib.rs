@@ -1,6 +1,6 @@
 extern crate core;
 
-use openssl::symm::{encrypt, Cipher, decrypt};
+use openssl::symm::{encrypt, Cipher, decrypt, Crypter, Mode};
 use utils::{fixed_xor, pkcs7_padding};
 
 #[derive(Debug)]
@@ -31,11 +31,14 @@ pub fn decrypt_aes128_block(input: &[u8], key: &[u8]) -> Result<Vec<u8>, AesErro
     if key.len() != 16 {
         return Err(AesError::KeyNotBlockSize);
     }
-    let padding = encrypt_aes128_block(&[16 as u8; 16], key)?;
-    let mut u = input.to_vec();
-    u.extend_from_slice(&padding);
-    return decrypt(Cipher::aes_128_ecb(), key, None, u.as_slice())
-        .map_err(|_| {AesError::DecryptionFailed});
+
+    return Crypter::new(Cipher::aes_128_ecb(), Mode::Decrypt, key, None).map(|mut decrypter| {
+        decrypter.pad(false);
+        let mut res = vec![0 as u8; 32];
+        decrypter.update(input, res.as_mut_slice());
+        res.truncate(input.len());
+        return res;
+    }).map_err(|_| {AesError::DecryptionFailed})
 }
 
 
@@ -66,9 +69,7 @@ pub fn encrypt_aes_ecb(plaintext: &[u8], key: &[u8]) -> Result<Vec<u8>, AesError
 pub fn decrypt_aes_cbc(ciphertext: &[u8], key: &[u8], iv: &[u8]) -> Result<Vec<u8>, AesError> {
     //TODO Check iv size
     let mut plaintext = Vec::new();
-    let size = ciphertext.len() + (16 - ciphertext.len() % 16);
-
-    let padded_ciphertext = pkcs7_padding(ciphertext, size);
+    println!("{}", ciphertext.len());
 
     for i in (0..ciphertext.len()).step_by(16) {
         let current_block = &ciphertext[i..i+16];

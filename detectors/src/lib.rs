@@ -58,3 +58,18 @@ pub fn number_blocks_repeated(data: &Vec<u8>, block_size: usize)-> u32 {
 
     return map.values().max().unwrap_or(&0).clone();
 }
+
+pub fn is_ecb_ciphertext (data: &[u8], block_size: usize) -> bool {
+    if data.len() < block_size*3 {
+        return false;
+    }
+    let blocks: Vec<&[u8]> = data.chunks(block_size).collect();
+
+    return blocks.iter().enumerate().fold(false, |acc, (index, block) | {
+        if index == 0 {
+            return acc
+        } else {
+            return acc | (blocks[index-1] == *block)
+        }
+    });
+}
